@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>🏀 농구 팀 밸런서</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f0f13;color:#e8e8f0;min-height:100vh;padding-bottom:80px;font-size:14px}
+h1{font-size:18px;font-weight:600;padding:16px;border-bottom:1px solid #2a2a3a}
+.tabs{display:flex;border-bottom:1px solid #2a2a3a;position:sticky;top:0;background:#0f0f13;z-index:10}
+.tab{flex:1;padding:11px 0;font-size:13px;background:none;border:none;color:#888;cursor:pointer;border-bottom:2px solid transparent}
+.tab.active{color:#7c8fff;border-bottom-color:#7c8fff;font-weight:600}
+.page{display:none;padding:12px}
+.page.active{display:block}
+input,select{width:100%;padding:9px 11px;border-radius:8px;border:1px solid #2a2a3a;background:#1a1a26;color:#e8e8f0;font-size:14px;outline:none}
+input[type=time]{color-scheme:dark}
+input:focus,select:focus{border-color:#7c8fff}
+button{padding:9px 14px;border-radius:8px;border:1px solid #2a2a3a;background:#1a1a26;color:#e8e8f0;font-size:14px;cursor:pointer}
+button:active{transform:scale(.97)}
+.btn-p{background:#7c8fff;border-color:#7c8fff;color:#fff;font-weight:600}
+.btn-d{color:#ff6b6b;border-color:#3a2020;background:transparent}
+.card{background:#1a1a26;border:1px solid #2a2a3a;border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:8px}
+.lbl{font-size:12px;color:#888;margin-bottom:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sk-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sk-lbl{font-size:12px;color:#aaa;width:58px;flex-shrink:0}
+.sk-val{font-size:13px;font-weight:600;color:#7c8fff;width:22px;text-align:right;flex-shrink:0}
+input[type=range]{flex:1;accent-color:#7c8fff}
+.badge-b{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:600;background:#1e2a4a;color:#7c8fff}
+.empty{text-align:center;color:#555;padding:40px 0;font-size:14px}
+.mname{font-weight:600;font-size:15px}
+.msub{font-size:12px;color:#888;margin-top:2px}
+
+/* 참석 상태 버튼 */
+.status-btns{display:flex;gap:5px;flex-wrap:wrap}
+.st-btn{padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid #2a2a3a;background:transparent;cursor:pointer;color:#888}
+.st-btn.active-present{background:#1a3a1a;border-color:#4caf50;color:#4caf50}
+.st-btn.active-absent{background:#3a1a1a;border-color:#ff6b6b;color:#ff6b6b}
+.st-btn.active-late{background:#2a2a1a;border-color:#ffc107;color:#ffc107}
+.st-btn.active-early{background:#1a2a3a;border-color:#29b6f6;color:#29b6f6}
+.time-input-row{display:flex;align-items:center;gap:8px;margin-top:6px;padding:6px 10px;background:#1e1e2e;border-radius:8px;border:1px solid #2a2a3a}
+.time-input-row label{font-size:12px;color:#888;white-space:nowrap}
+.time-input-row input{padding:5px 8px;font-size:13px}
+
+/* 참석 아이템 */
+.att-item{background:#1a1a26;border:1px solid #2a2a3a;border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.att-item.s-present{border-color:#4caf50}
+.att-item.s-absent{border-color:#ff6b6b;opacity:.6}
+.att-item.s-late{border-color:#ffc107}
+.att-item.s-early{border-color:#29b6f6}
+
+/* 팀배분 */
+.team-card{border-radius:10px;overflow:hidden;border:1px solid #2a2a3a;margin-bottom:12px}
+.th-b{padding:10px 14px;font-weight:600;font-size:14px;background:#1e2a4a;color:#7c8fff}
+.th-r{padding:10px 14px;font-weight:600;font-size:14px;background:#3a1a1a;color:#ff6b6b}
+.tm{padding:9px 14px;border-top:1px solid #2a2a3a;display:flex;justify-content:space-between;align-items:center}
+.tag-late{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:600;background:#2a2a1a;color:#ffc107;margin-left:6px}
+.tag-early{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:600;background:#1a2a3a;color:#29b6f6;margin-left:6px}
+.sc-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sc-b{background:#1e2a4a;border:1px solid #2a2a4a;border-radius:10px;padding:12px;text-align:center}
+.sc-r{background:#3a1a1a;border:1px solid #4a2020;border-radius:10px;padding:12px;text-align:center}
+.sc-lbl{font-size:11px;color:#888;margin-bottom:4px}
+.sc-num-b{font-size:26px;font-weight:700;color:#7c8fff}
+.sc-num-r{font-size:26px;font-weight:700;color:#ff6b6b}
+.diff{text-align:center;font-size:13px;color:#888;margin-bottom:14px}
+.notice-box{background:#2a2a1a;border:1px solid #3a3a1a;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#ffc107;line-height:1.6}
+
+.form-box{background:#1a1a26;border:1px solid #2a2a3a;border-radius:12px;padding:14px;margin-bottom:12px}
+.form-ttl{font-size:14px;font-weight:600;color:#7c8fff;margin-bottom:12px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #444;border-top-color:#7c8fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.api-box{background:#1e2a3a;border:1px solid #2a2a4a;border-radius:10px;padding:12px;margin-bottom:12px}
+.api-box p{font-size:12px;color:#888;margin-bottom:8px}
+.upload-box{border:1.5px dashed #2a2a4a;border-radius:12px;padding:20px;text-align:center;margin-bottom:12px;background:#1a1a26}
+.upload-box p{font-size:13px;color:#888;margin-top:8px}
+.ai-ok{font-size:13px;color:#7c8fff;margin-top:8px;padding:8px 12px;background:#1e2a3a;border-radius:8px}
+.ai-err{font-size:13px;color:#ff6b6b;margin-top:8px;padding:8px 12px;background:#2a1a1a;border-radius:8px}
+.section-title{font-size:13px;font-weight:600;color:#7c8fff;margin:16px 0 8px}
+.sk-manage-row{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#1a1a26;border:1px solid #2a2a3a;border-radius:8px;margin-bottom:7px}
+.sk-manage-row span{flex:1}
+.add-sk-row{display:flex;gap:8px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<h1>🏀 농구 팀 밸런서</h1>
+<div class="tabs">
+  <button class="tab active" onclick="showTab(0)">멤버</button>
+  <button class="tab" onclick="showTab(1)">참석</button>
+  <button class="tab" onclick="showTab(2)">팀배분</button>
+  <button class="tab" onclick="showTab(3)">설정</button>
+</div>
+
+<!-- 멤버 -->
+<div id="tab0" class="page active">
+  <div id="farea"></div>
+  <button class="btn-p" style="width:100%;margin-bottom:12px" onclick="showAdd()">+ 멤버 추가</button>
+  <div id="mlist"></div>
+</div>
+
+<!-- 참석 -->
+<div id="tab1" class="page">
+  <div class="api-box">
+    <p>AI 자동 인식용 Anthropic API 키 (로컬 저장)</p>
+    <div class="row">
+      <input type="password" id="akey" placeholder="sk-ant-..." style="flex:1"/>
+      <button onclick="saveKey()" style="white-space:nowrap;padding:9px 12px">저장</button>
+    </div>
+    <div id="kstat" style="font-size:12px;color:#888;margin-top:6px"></div>
+  </div>
+  <div class="upload-box">
+    <div style="font-size:28px">📸</div>
+    <p>카카오톡 투표 캡처 업로드 → AI 자동 인식</p>
+    <input type="file" id="fimg" accept="image/*" style="display:none" onchange="handleImg(this)"/>
+    <button class="btn-p" style="margin-top:10px;width:100%" id="ubtn" onclick="document.getElementById('fimg').click()">이미지 업로드</button>
+    <div id="ares"></div>
+  </div>
+  <div style="font-size:12px;color:#888;margin-bottom:10px" id="acnt"></div>
+  <div id="alist"></div>
+</div>
+
+<!-- 팀배분 -->
+<div id="tab2" class="page">
+  <div id="tinfo" style="font-size:13px;color:#888;margin-bottom:12px"></div>
+  <button class="btn-p" style="width:100%;margin-bottom:16px" onclick="divide()">팀 배분 시작</button>
+  <div id="tres"></div>
+</div>
+
+<!-- 설정 -->
+<div id="tab3" class="page">
+  <div class="section-title">실력 항목 관리</div>
+  <p style="font-size:12px;color:#888;margin-bottom:12px">항목 추가/삭제 시 기존 멤버 데이터도 함께 업데이트됩니다.</p>
+  <div id="sk-list"></div>
+  <div class="add-sk-row">
+    <input id="new-sk" placeholder="새 항목 이름 (예: 패스)" style="flex:1"/>
+    <button class="btn-p" onclick="addSkill()" style="white-space:nowrap;padding:9px 14px">+ 추가</button>
+  </div>
+</div>
+
+<script>
+const DEFAULT_SK=[
+  {k:'scoring',l:'득점능력'},{k:'speed',l:'스피드'},{k:'height',l:'키'},
+  {k:'dribble',l:'드리블'},{k:'defense',l:'수비'},{k:'leading',l:'리딩능력'},
+  {k:'tactics',l:'전술전략'},{k:'three',l:'3점슛'},{k:'stamina',l:'체력'}
+];
+const POS=['PG','SG','SF','PF','C'];
+// attendance: {id, status:'present'|'absent'|'late'|'early', time:'HH:MM'}
+let skills=JSON.parse(localStorage.getItem('bbsk')||JSON.stringify(DEFAULT_SK));
+let members=JSON.parse(localStorage.getItem('bbm')||'[]');
+let attendance=JSON.parse(localStorage.getItem('bbatt2')||'[]'); // [{id,status,time}]
+let editId=null;
+
+function sv(){
+  localStorage.setItem('bbsk',JSON.stringify(skills));
+  localStorage.setItem('bbm',JSON.stringify(members));
+  localStorage.setItem('bbatt2',JSON.stringify(attendance));
+}
+function tot(m){return skills.reduce((s,sk)=>s+(m.skills?.[sk.k]||5),0);}
+function getAtt(id){return attendance.find(a=>a.id===id)||{id,status:'absent',time:''};}
+function setAtt(id,status,time){
+  attendance=attendance.filter(a=>a.id!==id);
+  attendance.push({id,status,time:time||''});
+  sv();
+}
+
+function showTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('active',i===j));
+  if(i===1)renderAtt();
+  if(i===2)renderTInfo();
+  if(i===3)renderSkills();
+}
+
+/* ── 멤버 ── */
+function renderMembers(){
+  const el=document.getElementById('mlist');
+  if(!members.length){el.innerHTML='<div class="empty">멤버가 없습니다.<br>위 버튼으로 추가해 주세요.</div>';return;}
+  el.innerHTML=members.map(m=>`
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <div class="mname">${m.name}</div>
+          <div class="msub"><span class="badge-b">${m.pos1}</span> / ${m.pos2} · ${tot(m)}점</div>
+        </div>
+        <div class="row">
+          <button onclick="showEdit(${m.id})" style="padding:5px 10px;font-size:12px">수정</button>
+          <button class="btn-d" onclick="delM(${m.id})" style="padding:5px 10px;font-size:12px">삭제</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function defSk(){return Object.fromEntries(skills.map(s=>[s.k,5]));}
+function showAdd(){editId=null;renderForm({name:'',pos1:'PG',pos2:'SG',skills:defSk()});}
+function showEdit(id){editId=id;renderForm(members.find(m=>m.id===id));}
+
+function renderForm(m){
+  const pOpts=sel=>POS.map(p=>`<option${p===sel?' selected':''}>${p}</option>`).join('');
+  const skHtml=skills.map(sk=>`
+    <div class="sk-row">
+      <span class="sk-lbl">${sk.l}</span>
+      <input type="range" min="1" max="10" step="1" value="${m.skills?.[sk.k]||5}" id="sk-${sk.k}"
+        oninput="document.getElementById('sv-${sk.k}').textContent=this.value"/>
+      <span class="sk-val" id="sv-${sk.k}">${m.skills?.[sk.k]||5}</span>
+    </div>`).join('');
+  document.getElementById('farea').innerHTML=`
+    <div class="form-box">
+      <div class="form-ttl">${editId?'멤버 수정':'멤버 추가'}</div>
+      <div class="lbl">이름</div>
+      <input id="fn" value="${m.name}" placeholder="선수 이름" style="margin-bottom:10px"/>
+      <div class="g2" style="margin-bottom:10px">
+        <div><div class="lbl">포지션 1순위</div><select id="fp1">${pOpts(m.pos1)}</select></div>
+        <div><div class="lbl">포지션 2순위</div><select id="fp2">${pOpts(m.pos2)}</select></div>
+      </div>
+      <div class="lbl" style="margin-bottom:8px">실력 항목 (1~10)</div>
+      ${skHtml}
+      <div class="row" style="margin-top:10px">
+        <button class="btn-p" style="flex:1" onclick="saveForm()">저장</button>
+        <button style="flex:1" onclick="cancelForm()">취소</button>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function cancelForm(){document.getElementById('farea').innerHTML='';editId=null;}
+function saveForm(){
+  const name=document.getElementById('fn').value.trim();
+  if(!name){alert('이름을 입력해 주세요.');return;}
+  const sk={};
+  skills.forEach(s=>{sk[s.k]=parseInt(document.getElementById('sk-'+s.k).value);});
+  const entry={name,pos1:document.getElementById('fp1').value,pos2:document.getElementById('fp2').value,skills:sk};
+  if(editId){members=members.map(m=>m.id===editId?{...entry,id:m.id}:m);}
+  else{entry.id=Date.now();members.push(entry);}
+  sv();cancelForm();renderMembers();
+}
+function delM(id){
+  if(!confirm('삭제할까요?'))return;
+  members=members.filter(m=>m.id!==id);
+  attendance=attendance.filter(a=>a.id!==id);
+  sv();renderMembers();
+}
+
+/* ── 참석 ── */
+const ST_LABELS={present:'참석',absent:'불참',late:'늦참',early:'조퇴'};
+const ST_CLS={present:'active-present',absent:'active-absent',late:'active-late',early:'active-early'};
+
+function renderAtt(){
+  const counts={present:0,late:0,early:0,absent:0};
+  members.forEach(m=>{counts[getAtt(m.id).status]++;});
+  document.getElementById('acnt').textContent=
+    `참석 ${counts.present} · 늦참 ${counts.late} · 조퇴 ${counts.early} · 불참 ${counts.absent}`;
+  const el=document.getElementById('alist');
+  if(!members.length){el.innerHTML='<div class="empty">멤버를 먼저 추가해 주세요.</div>';return;}
+  el.innerHTML=members.map(m=>{
+    const a=getAtt(m.id);
+    const needTime=a.status==='late'||a.status==='early';
+    const timeRow=needTime?`
+      <div class="time-input-row">
+        <label>${a.status==='late'?'도착 예정':'조퇴 예정'} 시간</label>
+        <input type="time" value="${a.time||''}" style="flex:1;max-width:130px"
+          onchange="updateTime(${m.id},this.value)"/>
+      </div>`:'';
+    const stBtns=['present','absent','late','early'].map(s=>`
+      <button class="st-btn${a.status===s?' '+ST_CLS[s]:''}" onclick="changeStatus(${m.id},'${s}')">${ST_LABELS[s]}</button>`).join('');
+    return `<div class="att-item s-${a.status}" id="att-${m.id}">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <div><div class="mname">${m.name}</div><div class="msub">${m.pos1} / ${m.pos2}</div></div>
+      </div>
+      <div class="status-btns">${stBtns}</div>
+      ${timeRow}
+    </div>`;}).join('');
+  const k=localStorage.getItem('bbapikey')||'';
+  document.getElementById('akey').value=k;
+  document.getElementById('kstat').textContent=k?'✅ API 키 저장됨':'';
+}
+
+function changeStatus(id,status){
+  const prev=getAtt(id);
+  setAtt(id,status,status===prev.status?prev.time:'');
+  renderAtt();
+}
+function updateTime(id,time){
+  const a=getAtt(id);
+  setAtt(id,a.status,time);
+}
+
+function saveKey(){
+  const k=document.getElementById('akey').value.trim();
+  localStorage.setItem('bbapikey',k);
+  document.getElementById('kstat').textContent=k?'✅ API 키 저장됨':'삭제됨';
+}
+
+async function handleImg(input){
+  const file=input.files[0];if(!file)return;
+  const apiKey=localStorage.getItem('bbapikey')||'';
+  if(!apiKey){alert('API 키를 먼저 입력해 주세요.');return;}
+  const btn=document.getElementById('ubtn');
+  const resEl=document.getElementById('ares');
+  btn.innerHTML='<span class="spin"></span>분석 중...';btn.disabled=true;resEl.innerHTML='';
+  const b64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(file);});
+  try{
+    const names=members.map(m=>m.name).join(', ');
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:file.type||'image/jpeg',data:b64}},
+        {type:'text',text:`카카오톡 투표 결과 캡처입니다. 참석 응답한 사람 이름을 찾아주세요.\n팀 멤버: ${names}\n참석한 이름만 JSON 배열로 반환. 예: ["홍길동"]\nJSON만 반환.`}
+      ]}]})
+    });
+    const data=await resp.json();
+    const text=(data.content||[]).map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    const matched=members.filter(m=>parsed.some(n=>m.name.includes(n)||n.includes(m.name)));
+    // AI는 참석만 설정, 나머지는 불참
+    members.forEach(m=>{
+      const isMatch=matched.some(x=>x.id===m.id);
+      setAtt(m.id,isMatch?'present':'absent','');
+    });
+    resEl.className='ai-ok';resEl.innerHTML=`✅ ${matched.length}명 참석 인식: ${matched.map(m=>m.name).join(', ')}`;
+    renderAtt();
+  }catch(e){resEl.className='ai-err';resEl.innerHTML='❌ 분석 실패. 수동으로 설정해 주세요.';}
+  btn.innerHTML='이미지 업로드';btn.disabled=false;input.value='';
+}
+
+/* ── 팀배분 ── */
+function renderTInfo(){
+  const present=members.filter(m=>['present','late','early'].includes(getAtt(m.id).status));
+  document.getElementById('tinfo').textContent=`참석 인원: ${present.length}명 (늦참/조퇴 포함)`;
+}
+
+function divide(){
+  const present=members.filter(m=>getAtt(m.id).status==='present');
+  const late=members.filter(m=>getAtt(m.id).status==='late');
+  const early=members.filter(m=>getAtt(m.id).status==='early');
+  const all=[...present,...late,...early];
+
+  if(all.length<2){alert('참석 탭에서 최소 2명 이상 선택해 주세요.');return;}
+
+  // 처음부터 참석하는 사람만으로 균형 배분
+  const sorted=[...present].sort((a,b)=>tot(b)-tot(a));
+  const t1=[],t2=[];let s1=0,s2=0;
+  for(const m of sorted){const sc=tot(m);if(s1<=s2){t1.push(m);s1+=sc;}else{t2.push(m);s2+=sc;}}
+
+  // 늦참/조퇴: 인원 적은 팀에 순서대로 배정
+  const pendingMembers=[...late,...early].sort((a,b)=>{
+    // 조퇴 시간 기준 정렬 (일찍 조퇴하는 순)
+    const ta=getAtt(a.id).time||'99:99';
+    const tb=getAtt(b.id).time||'99:99';
+    const sa=getAtt(a.id).status, sb=getAtt(b.id).status;
+    if(sa===sb)return ta<tb?-1:1;
+    return sa==='early'?-1:1;
+  });
+  for(const m of pendingMembers){
+    if(t1.length<=t2.length){t1.push(m);}else{t2.push(m);}
+  }
+
+  const memberRow=(m)=>{
+    const a=getAtt(m.id);
+    let tag='';
+    if(a.status==='late')tag=`<span class="tag-late">늦참${a.time?' '+a.time:''}</span>`;
+    if(a.status==='early')tag=`<span class="tag-early">조퇴${a.time?' '+a.time:''}</span>`;
+    return `<div class="tm">
+      <div><div class="mname">${m.name}${tag}</div><div class="msub">${m.pos1} / ${m.pos2}</div></div>
+      <div style="font-size:13px;color:#888">${tot(m)}점</div>
+    </div>`;
+  };
+
+  // 실제 점수는 present+late+early 모두 합산
+  const rs1=t1.reduce((s,m)=>s+tot(m),0);
+  const rs2=t2.reduce((s,m)=>s+tot(m),0);
+
+  let notice='';
+  if(late.length||early.length){
+    const lateNames=late.map(m=>{const a=getAtt(m.id);return m.name+(a.time?` (${a.time} 도착)`:'')}); 
+    const earlyNames=early.map(m=>{const a=getAtt(m.id);return m.name+(a.time?` (${a.time} 조퇴)`:'')}); 
+    notice=`<div class="notice-box">`;
+    if(lateNames.length)notice+=`⏰ 늦참: ${lateNames.join(', ')}<br>`;
+    if(earlyNames.length)notice+=`🚪 조퇴: ${earlyNames.join(', ')}<br>`;
+    notice+=`인원수 균형을 위해 해당 선수는 적은 팀에 배정되었습니다.</div>`;
+  }
+
+  document.getElementById('tres').innerHTML=`
+    ${notice}
+    <div class="sc-cards">
+      <div class="sc-b"><div class="sc-lbl">팀 1 총점</div><div class="sc-num-b">${rs1}</div></div>
+      <div class="sc-r"><div class="sc-lbl">팀 2 총점</div><div class="sc-num-r">${rs2}</div></div>
+    </div>
+    <div class="diff">점수 차이: ${Math.abs(rs1-rs2)}점</div>
+    <div class="team-card"><div class="th-b">팀 1 · ${t1.length}명</div>${t1.map(memberRow).join('')}</div>
+    <div class="team-card"><div class="th-r">팀 2 · ${t2.length}명</div>${t2.map(memberRow).join('')}</div>`;
+  renderTInfo();
+}
+
+/* ── 설정 ── */
+function renderSkills(){
+  const el=document.getElementById('sk-list');
+  if(!skills.length){el.innerHTML='<div class="empty">항목이 없습니다.</div>';return;}
+  el.innerHTML=skills.map(sk=>`
+    <div class="sk-manage-row">
+      <span>${sk.l}</span>
+      <button class="btn-d" onclick="delSkill('${sk.k}')" style="padding:5px 10px;font-size:12px">삭제</button>
+    </div>`).join('');
+}
+function addSkill(){
+  const inp=document.getElementById('new-sk');
+  const name=inp.value.trim();
+  if(!name)return;
+  if(skills.some(s=>s.l===name)){alert('이미 있는 항목입니다.');return;}
+  const key='sk_'+Date.now();
+  skills.push({k:key,l:name});
+  members=members.map(m=>({...m,skills:{...m.skills,[key]:5}}));
+  sv();inp.value='';renderSkills();
+}
+function delSkill(k){
+  if(skills.length<=1){alert('최소 1개 항목이 필요합니다.');return;}
+  if(!confirm(`"${skills.find(s=>s.k===k)?.l}" 항목을 삭제할까요?`))return;
+  skills=skills.filter(s=>s.k!==k);
+  members=members.map(m=>{const s={...m.skills};delete s[k];return{...m,skills:s};});
+  sv();renderSkills();
+}
+
+renderMembers();
+</script>
+</body>
+</html>
