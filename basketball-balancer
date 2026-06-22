@@ -3,69 +3,59 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>🏀 농구 팀 밸런서</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f0f13;color:#e8e8f0;min-height:100vh;padding-bottom:80px}
 h1{font-size:18px;font-weight:600;padding:16px;border-bottom:1px solid #2a2a3a}
 .tabs{display:flex;border-bottom:1px solid #2a2a3a;position:sticky;top:0;background:#0f0f13;z-index:10}
-.tab{flex:1;padding:12px 0;font-size:14px;background:none;border:none;color:#888;cursor:pointer;border-bottom:2px solid transparent;transition:.2s}
+.tab{flex:1;padding:12px 0;font-size:14px;background:none;border:none;color:#888;cursor:pointer;border-bottom:2px solid transparent}
 .tab.active{color:#7c8fff;border-bottom-color:#7c8fff;font-weight:600}
 .page{display:none;padding:12px}
 .page.active{display:block}
-input,select,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #2a2a3a;background:#1a1a26;color:#e8e8f0;font-size:14px;outline:none}
+input,select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #2a2a3a;background:#1a1a26;color:#e8e8f0;font-size:14px;outline:none}
 input:focus,select:focus{border-color:#7c8fff}
-button{padding:10px 16px;border-radius:8px;border:1px solid #2a2a3a;background:#1a1a26;color:#e8e8f0;font-size:14px;cursor:pointer;transition:.15s}
-button:active{transform:scale(.97);background:#2a2a3a}
-.btn-primary{background:#7c8fff;border-color:#7c8fff;color:#fff;font-weight:600}
-.btn-primary:active{background:#6070ee}
-.btn-danger{color:#ff6b6b;border-color:#3a2020}
+button{padding:10px 16px;border-radius:8px;border:1px solid #2a2a3a;background:#1a1a26;color:#e8e8f0;font-size:14px;cursor:pointer}
+button:active{transform:scale(.97)}
+.btn-p{background:#7c8fff;border-color:#7c8fff;color:#fff;font-weight:600}
+.btn-d{color:#ff6b6b;border-color:#3a2020}
 .card{background:#1a1a26;border:1px solid #2a2a3a;border-radius:12px;padding:12px 14px;margin-bottom:10px}
-.row{display:flex;align-items:center;gap:10px}
-.label{font-size:12px;color:#888;margin-bottom:4px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.skill-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.skill-label{font-size:12px;color:#aaa;width:58px;flex-shrink:0}
-.skill-val{font-size:13px;font-weight:600;color:#7c8fff;width:20px;text-align:right;flex-shrink:0}
-input[type=range]{flex:1;accent-color:#7c8fff;height:4px}
-.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
-.badge-blue{background:#1e2a4a;color:#7c8fff}
-.badge-red{background:#3a1a1a;color:#ff6b6b}
-.score-total{font-size:12px;color:#7c8fff;text-align:right;margin-top:4px}
+.row{display:flex;align-items:center;gap:8px}
+.lbl{font-size:12px;color:#888;margin-bottom:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sk-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sk-lbl{font-size:12px;color:#aaa;width:58px;flex-shrink:0}
+.sk-val{font-size:13px;font-weight:600;color:#7c8fff;width:22px;text-align:right;flex-shrink:0}
+input[type=range]{flex:1;accent-color:#7c8fff}
+.badge-b{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:600;background:#1e2a4a;color:#7c8fff}
 .empty{text-align:center;color:#555;padding:40px 0;font-size:14px}
-.member-name{font-weight:600;font-size:15px}
-.member-sub{font-size:12px;color:#888;margin-top:2px}
-.team-header{padding:10px 14px;font-weight:600;font-size:14px;border-radius:10px 10px 0 0}
-.team-blue .team-header{background:#1e2a4a;color:#7c8fff}
-.team-red .team-header{background:#3a1a1a;color:#ff6b6b}
+.mname{font-weight:600;font-size:15px}
+.msub{font-size:12px;color:#888;margin-top:2px}
 .team-card{border-radius:10px;overflow:hidden;border:1px solid #2a2a3a;margin-bottom:12px}
-.team-member{padding:10px 14px;border-top:1px solid #2a2a3a;display:flex;justify-content:space-between;align-items:center}
-.score-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.score-card{border-radius:10px;padding:12px;text-align:center}
-.score-card.blue{background:#1e2a4a;border:1px solid #2a2a4a}
-.score-card.red{background:#3a1a1a;border:1px solid #4a2020}
-.score-card .sc-label{font-size:11px;color:#888;margin-bottom:4px}
-.score-card .sc-val{font-size:26px;font-weight:700}
-.score-card.blue .sc-val{color:#7c8fff}
-.score-card.red .sc-val{color:#ff6b6b}
+.th-b{padding:10px 14px;font-weight:600;font-size:14px;background:#1e2a4a;color:#7c8fff}
+.th-r{padding:10px 14px;font-weight:600;font-size:14px;background:#3a1a1a;color:#ff6b6b}
+.tm{padding:10px 14px;border-top:1px solid #2a2a3a;display:flex;justify-content:space-between;align-items:center}
+.sc-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sc-b{background:#1e2a4a;border:1px solid #2a2a4a;border-radius:10px;padding:12px;text-align:center}
+.sc-r{background:#3a1a1a;border:1px solid #4a2020;border-radius:10px;padding:12px;text-align:center}
+.sc-lbl{font-size:11px;color:#888;margin-bottom:4px}
+.sc-num-b{font-size:26px;font-weight:700;color:#7c8fff}
+.sc-num-r{font-size:26px;font-weight:700;color:#ff6b6b}
 .diff{text-align:center;font-size:13px;color:#888;margin-bottom:14px}
-.attend-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#1a1a26;border:1px solid #2a2a3a;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.15s}
-.attend-item.checked{background:#1e2a3a;border-color:#7c8fff}
-.checkbox{width:22px;height:22px;border-radius:6px;border:1.5px solid #2a2a3a;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.attend-item.checked .checkbox{background:#7c8fff;border-color:#7c8fff}
-.check-mark{color:#fff;font-size:14px;line-height:1}
-.upload-area{border:1.5px dashed #2a2a4a;border-radius:12px;padding:24px;text-align:center;margin-bottom:12px;background:#1a1a26}
-.upload-area p{font-size:13px;color:#888;margin-top:8px}
-.ai-result{font-size:13px;color:#7c8fff;margin-top:8px;padding:8px 12px;background:#1e2a3a;border-radius:8px}
-.ai-result.err{color:#ff6b6b;background:#2a1a1a}
-.form-section{background:#1a1a26;border:1px solid #2a2a3a;border-radius:12px;padding:14px;margin-bottom:12px}
-.form-title{font-size:14px;font-weight:600;color:#7c8fff;margin-bottom:12px}
-.loading{display:inline-block;width:16px;height:16px;border:2px solid #444;border-top-color:#7c8fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.api-key-section{background:#1e2a3a;border:1px solid #2a2a4a;border-radius:10px;padding:12px;margin-bottom:12px}
-.api-key-section p{font-size:12px;color:#888;margin-bottom:8px}
+.att-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#1a1a26;border:1px solid #2a2a3a;border-radius:10px;margin-bottom:8px;cursor:pointer}
+.att-item.on{background:#1e2a3a;border-color:#7c8fff}
+.chk{width:22px;height:22px;border-radius:6px;border:1.5px solid #2a2a3a;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:#fff}
+.att-item.on .chk{background:#7c8fff;border-color:#7c8fff}
+.upload-box{border:1.5px dashed #2a2a4a;border-radius:12px;padding:20px;text-align:center;margin-bottom:12px;background:#1a1a26}
+.upload-box p{font-size:13px;color:#888;margin-top:8px}
+.ai-ok{font-size:13px;color:#7c8fff;margin-top:8px;padding:8px 12px;background:#1e2a3a;border-radius:8px}
+.ai-err{font-size:13px;color:#ff6b6b;margin-top:8px;padding:8px 12px;background:#2a1a1a;border-radius:8px}
+.form-box{background:#1a1a26;border:1px solid #2a2a3a;border-radius:12px;padding:14px;margin-bottom:12px}
+.form-ttl{font-size:14px;font-weight:600;color:#7c8fff;margin-bottom:12px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #444;border-top-color:#7c8fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.api-box{background:#1e2a3a;border:1px solid #2a2a4a;border-radius:10px;padding:12px;margin-bottom:12px}
+.api-box p{font-size:12px;color:#888;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -76,318 +66,205 @@ input[type=range]{flex:1;accent-color:#7c8fff;height:4px}
   <button class="tab" onclick="showTab(2)">팀배분</button>
 </div>
 
-<!-- 멤버 탭 -->
 <div id="tab0" class="page active">
-  <div id="member-form-area"></div>
-  <button class="btn-primary" style="width:100%;margin-bottom:12px" onclick="showAddForm()">+ 멤버 추가</button>
-  <div id="member-list"></div>
+  <div id="farea"></div>
+  <button class="btn-p" style="width:100%;margin-bottom:12px" onclick="showAdd()">+ 멤버 추가</button>
+  <div id="mlist"></div>
 </div>
 
-<!-- 참석 탭 -->
 <div id="tab1" class="page">
-  <div class="api-key-section">
-    <p>AI 자동 인식을 위해 Anthropic API 키를 입력하세요 (로컬 저장)</p>
+  <div class="api-box">
+    <p>AI 자동 인식용 Anthropic API 키 (로컬 저장)</p>
     <div class="row">
-      <input type="password" id="api-key-input" placeholder="sk-ant-..." style="flex:1"/>
-      <button onclick="saveApiKey()" style="white-space:nowrap">저장</button>
+      <input type="password" id="akey" placeholder="sk-ant-..." style="flex:1"/>
+      <button onclick="saveKey()" style="white-space:nowrap;padding:10px 12px">저장</button>
     </div>
-    <div id="api-key-status" style="font-size:12px;color:#888;margin-top:6px"></div>
+    <div id="kstat" style="font-size:12px;color:#888;margin-top:6px"></div>
   </div>
-  <div class="upload-area">
+  <div class="upload-box">
     <div style="font-size:32px">📸</div>
     <p>카카오톡 투표 캡처를 업로드하면<br>AI가 참석자를 자동 인식합니다</p>
-    <input type="file" id="img-input" accept="image/*" style="display:none" onchange="handleImage(this)"/>
-    <button class="btn-primary" style="margin-top:12px;width:100%" onclick="document.getElementById('img-input').click()" id="upload-btn">이미지 업로드</button>
-    <div id="ai-result"></div>
+    <input type="file" id="fimg" accept="image/*" style="display:none" onchange="handleImg(this)"/>
+    <button class="btn-p" style="margin-top:12px;width:100%" id="ubtn" onclick="document.getElementById('fimg').click()">이미지 업로드</button>
+    <div id="ares"></div>
   </div>
-  <div style="font-size:12px;color:#888;margin-bottom:8px" id="attend-count">수동 선택</div>
-  <div id="attend-list"></div>
+  <div style="font-size:12px;color:#888;margin-bottom:8px" id="acnt">수동 선택</div>
+  <div id="alist"></div>
 </div>
 
-<!-- 팀배분 탭 -->
 <div id="tab2" class="page">
-  <div id="team-info" style="font-size:13px;color:#888;margin-bottom:12px"></div>
-  <button class="btn-primary" style="width:100%;margin-bottom:16px" onclick="divideTeams()">팀 배분 시작</button>
-  <div id="team-result"></div>
+  <div id="tinfo" style="font-size:13px;color:#888;margin-bottom:12px"></div>
+  <button class="btn-p" style="width:100%;margin-bottom:16px" onclick="divide()">팀 배분 시작</button>
+  <div id="tres"></div>
 </div>
 
 <script>
-const SKILLS = [
-  {key:'scoring',label:'득점능력'},
-  {key:'speed',label:'스피드'},
-  {key:'height',label:'키'},
-  {key:'dribble',label:'드리블'},
-  {key:'defense',label:'수비'},
-  {key:'leading',label:'리딩능력'},
-  {key:'tactics',label:'전술전략'},
-  {key:'three',label:'3점슛'},
-  {key:'stamina',label:'체력'},
+const SK=[
+  {k:'scoring',l:'득점능력'},{k:'speed',l:'스피드'},{k:'height',l:'키'},
+  {k:'dribble',l:'드리블'},{k:'defense',l:'수비'},{k:'leading',l:'리딩능력'},
+  {k:'tactics',l:'전술전략'},{k:'three',l:'3점슛'},{k:'stamina',l:'체력'}
 ];
-const POSITIONS = ['PG','SG','SF','PF','C'];
+const POS=['PG','SG','SF','PF','C'];
+let members=JSON.parse(localStorage.getItem('bbm')||'[]');
+let attended=JSON.parse(localStorage.getItem('bba')||'[]');
+let editId=null;
 
-let members = JSON.parse(localStorage.getItem('bball-members') || '[]');
-let attended = JSON.parse(localStorage.getItem('bball-attended') || '[]');
-let editingId = null;
+function sv(){localStorage.setItem('bbm',JSON.stringify(members));localStorage.setItem('bba',JSON.stringify(attended));}
+function tot(m){return SK.reduce((s,sk)=>s+(m.skills?.[sk.k]||5),0);}
 
-function save() {
-  localStorage.setItem('bball-members', JSON.stringify(members));
-  localStorage.setItem('bball-attended', JSON.stringify(attended));
+function showTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('active',i===j));
+  if(i===1)renderAtt();
+  if(i===2)renderTInfo();
 }
 
-function totalScore(m) {
-  return SKILLS.reduce((s,sk) => s + (m.skills?.[sk.key] || 5), 0);
-}
-
-function showTab(i) {
-  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', i===j));
-  document.querySelectorAll('.page').forEach((p,j) => p.classList.toggle('active', i===j));
-  if (i===1) renderAttend();
-  if (i===2) renderTeamInfo();
-}
-
-// ── 멤버 탭 ──
-function renderMembers() {
-  const el = document.getElementById('member-list');
-  if (!members.length) { el.innerHTML = '<div class="empty">멤버가 없습니다.<br>위 버튼으로 추가해 주세요.</div>'; return; }
-  el.innerHTML = members.map(m => `
+function renderMembers(){
+  const el=document.getElementById('mlist');
+  if(!members.length){el.innerHTML='<div class="empty">멤버가 없습니다.<br>위 버튼으로 추가해 주세요.</div>';return;}
+  el.innerHTML=members.map(m=>`
     <div class="card">
       <div class="row" style="justify-content:space-between">
         <div>
-          <div class="member-name">${m.name}</div>
-          <div class="member-sub">
-            <span class="badge badge-blue">${m.pos1}</span>
-            <span style="color:#555;margin:0 4px">/</span>
-            <span class="badge" style="background:#222;color:#888">${m.pos2}</span>
-            &nbsp;·&nbsp; ${totalScore(m)}점
-          </div>
+          <div class="mname">${m.name}</div>
+          <div class="msub"><span class="badge-b">${m.pos1}</span> / ${m.pos2} · ${tot(m)}점</div>
         </div>
-        <div class="row" style="gap:6px">
-          <button onclick="showEditForm(${m.id})">수정</button>
-          <button class="btn-danger" onclick="deleteMember(${m.id})">삭제</button>
+        <div class="row">
+          <button onclick="showEdit(${m.id})" style="padding:6px 10px;font-size:12px">수정</button>
+          <button class="btn-d" onclick="delM(${m.id})" style="padding:6px 10px;font-size:12px">삭제</button>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function defaultSkills() {
-  return Object.fromEntries(SKILLS.map(s => [s.key, 5]));
-}
+function defSk(){return Object.fromEntries(SK.map(s=>[s.k,5]));}
 
-function showAddForm() {
-  editingId = null;
-  renderForm({ name:'', pos1:'PG', pos2:'SG', skills: defaultSkills() });
-}
+function showAdd(){editId=null;renderForm({name:'',pos1:'PG',pos2:'SG',skills:defSk()});}
+function showEdit(id){editId=id;renderForm(members.find(m=>m.id===id));}
 
-function showEditForm(id) {
-  editingId = id;
-  const m = members.find(x => x.id === id);
-  renderForm(m);
-}
-
-function renderForm(m) {
-  const skillsHtml = SKILLS.map(sk => `
-    <div class="skill-row">
-      <span class="skill-label">${sk.label}</span>
-      <input type="range" min="1" max="10" step="1" value="${m.skills?.[sk.key]||5}"
-        id="sk-${sk.key}" oninput="document.getElementById('sv-${sk.key}').textContent=this.value"/>
-      <span class="skill-val" id="sv-${sk.key}">${m.skills?.[sk.key]||5}</span>
-    </div>
-  `).join('');
-
-  const posOpts = p => POSITIONS.map(x => `<option${x===p?' selected':''}>${x}</option>`).join('');
-
-  document.getElementById('member-form-area').innerHTML = `
-    <div class="form-section">
-      <div class="form-title">${editingId ? '멤버 수정' : '멤버 추가'}</div>
-      <div class="label">이름</div>
-      <input id="f-name" value="${m.name}" placeholder="선수 이름" style="margin-bottom:10px"/>
-      <div class="grid2" style="margin-bottom:10px">
-        <div>
-          <div class="label">포지션 1순위</div>
-          <select id="f-pos1">${posOpts(m.pos1)}</select>
-        </div>
-        <div>
-          <div class="label">포지션 2순위</div>
-          <select id="f-pos2">${posOpts(m.pos2)}</select>
-        </div>
+function renderForm(m){
+  const pOpts=sel=>POS.map(p=>`<option${p===sel?' selected':''}>${p}</option>`).join('');
+  const skHtml=SK.map(sk=>`
+    <div class="sk-row">
+      <span class="sk-lbl">${sk.l}</span>
+      <input type="range" min="1" max="10" step="1" value="${m.skills?.[sk.k]||5}" id="sk-${sk.k}"
+        oninput="document.getElementById('sv-${sk.k}').textContent=this.value"/>
+      <span class="sk-val" id="sv-${sk.k}">${m.skills?.[sk.k]||5}</span>
+    </div>`).join('');
+  document.getElementById('farea').innerHTML=`
+    <div class="form-box">
+      <div class="form-ttl">${editId?'멤버 수정':'멤버 추가'}</div>
+      <div class="lbl">이름</div>
+      <input id="fn" value="${m.name}" placeholder="선수 이름" style="margin-bottom:10px"/>
+      <div class="g2" style="margin-bottom:10px">
+        <div><div class="lbl">포지션 1순위</div><select id="fp1">${pOpts(m.pos1)}</select></div>
+        <div><div class="lbl">포지션 2순위</div><select id="fp2">${pOpts(m.pos2)}</select></div>
       </div>
-      <div class="label" style="margin-bottom:8px">실력 항목 (1~10)</div>
-      ${skillsHtml}
-      <div class="row" style="margin-top:10px;gap:8px">
-        <button class="btn-primary" style="flex:1" onclick="saveForm()">저장</button>
+      <div class="lbl" style="margin-bottom:8px">실력 항목 (1~10)</div>
+      ${skHtml}
+      <div class="row" style="margin-top:10px">
+        <button class="btn-p" style="flex:1" onclick="saveForm()">저장</button>
         <button style="flex:1" onclick="cancelForm()">취소</button>
       </div>
-    </div>
-  `;
-  window.scrollTo(0, 0);
-}
-
-function cancelForm() {
-  document.getElementById('member-form-area').innerHTML = '';
-  editingId = null;
-}
-
-function saveForm() {
-  const name = document.getElementById('f-name').value.trim();
-  if (!name) { alert('이름을 입력해 주세요.'); return; }
-  const skills = {};
-  SKILLS.forEach(sk => { skills[sk.key] = parseInt(document.getElementById('sk-'+sk.key).value); });
-  const entry = { name, pos1: document.getElementById('f-pos1').value, pos2: document.getElementById('f-pos2').value, skills };
-  if (editingId) {
-    members = members.map(m => m.id === editingId ? {...entry, id: m.id} : m);
-  } else {
-    entry.id = Date.now();
-    members.push(entry);
-  }
-  save();
-  cancelForm();
-  renderMembers();
-}
-
-function deleteMember(id) {
-  if (!confirm('삭제할까요?')) return;
-  members = members.filter(m => m.id !== id);
-  attended = attended.filter(x => x !== id);
-  save();
-  renderMembers();
-}
-
-// ── 참석 탭 ──
-function renderAttend() {
-  attended = attended.filter(id => members.some(m => m.id === id));
-  document.getElementById('attend-count').textContent = `수동 선택 (${attended.length}/${members.length}명)`;
-  const el = document.getElementById('attend-list');
-  if (!members.length) { el.innerHTML = '<div class="empty">멤버를 먼저 추가해 주세요.</div>'; return; }
-  el.innerHTML = members.map(m => {
-    const on = attended.includes(m.id);
-    return `<div class="attend-item${on?' checked':''}" onclick="toggleAttend(${m.id})">
-      <div class="checkbox"><span class="check-mark">${on?'✓':''}</span></div>
-      <div>
-        <div class="member-name">${m.name}</div>
-        <div class="member-sub">${m.pos1} / ${m.pos2} · ${totalScore(m)}점</div>
-      </div>
     </div>`;
-  }).join('');
-  // api key
-  const k = localStorage.getItem('bball-apikey') || '';
-  document.getElementById('api-key-input').value = k;
-  document.getElementById('api-key-status').textContent = k ? '✅ API 키 저장됨' : '';
+  window.scrollTo(0,0);
 }
 
-function toggleAttend(id) {
-  if (attended.includes(id)) attended = attended.filter(x => x !== id);
-  else attended.push(id);
-  save();
-  renderAttend();
+function cancelForm(){document.getElementById('farea').innerHTML='';editId=null;}
+function saveForm(){
+  const name=document.getElementById('fn').value.trim();
+  if(!name){alert('이름을 입력해 주세요.');return;}
+  const skills={};
+  SK.forEach(sk=>{skills[sk.k]=parseInt(document.getElementById('sk-'+sk.k).value);});
+  const entry={name,pos1:document.getElementById('fp1').value,pos2:document.getElementById('fp2').value,skills};
+  if(editId){members=members.map(m=>m.id===editId?{...entry,id:m.id}:m);}
+  else{entry.id=Date.now();members.push(entry);}
+  sv();cancelForm();renderMembers();
+}
+function delM(id){if(!confirm('삭제할까요?'))return;members=members.filter(m=>m.id!==id);attended=attended.filter(x=>x!==id);sv();renderMembers();}
+
+function renderAtt(){
+  attended=attended.filter(id=>members.some(m=>m.id===id));
+  document.getElementById('acnt').textContent=`수동 선택 (${attended.length}/${members.length}명)`;
+  const el=document.getElementById('alist');
+  if(!members.length){el.innerHTML='<div class="empty">멤버를 먼저 추가해 주세요.</div>';return;}
+  el.innerHTML=members.map(m=>{
+    const on=attended.includes(m.id);
+    return `<div class="att-item${on?' on':''}" onclick="togAtt(${m.id})">
+      <div class="chk">${on?'✓':''}</div>
+      <div><div class="mname">${m.name}</div><div class="msub">${m.pos1} / ${m.pos2} · ${tot(m)}점</div></div>
+    </div>`;}).join('');
+  const k=localStorage.getItem('bbapikey')||'';
+  document.getElementById('akey').value=k;
+  document.getElementById('kstat').textContent=k?'✅ API 키 저장됨':'';
 }
 
-function saveApiKey() {
-  const k = document.getElementById('api-key-input').value.trim();
-  localStorage.setItem('bball-apikey', k);
-  document.getElementById('api-key-status').textContent = k ? '✅ API 키 저장됨' : '삭제됨';
+function togAtt(id){
+  if(attended.includes(id))attended=attended.filter(x=>x!==id);else attended.push(id);
+  sv();renderAtt();
+}
+function saveKey(){
+  const k=document.getElementById('akey').value.trim();
+  localStorage.setItem('bbapikey',k);
+  document.getElementById('kstat').textContent=k?'✅ API 키 저장됨':'삭제됨';
 }
 
-async function handleImage(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const apiKey = localStorage.getItem('bball-apikey') || '';
-  if (!apiKey) { alert('API 키를 먼저 입력해 주세요.'); return; }
-
-  const btn = document.getElementById('upload-btn');
-  const resEl = document.getElementById('ai-result');
-  btn.innerHTML = '<span class="loading"></span>분석 중...';
-  btn.disabled = true;
-  resEl.innerHTML = '';
-
-  const b64 = await new Promise(res => {
-    const r = new FileReader();
-    r.onload = () => res(r.result.split(',')[1]);
-    r.readAsDataURL(file);
-  });
-
-  try {
-    const names = members.map(m => m.name).join(', ');
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 500,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: file.type || 'image/jpeg', data: b64 } },
-            { type: 'text', text: `이 이미지는 카카오톡 투표 결과 캡처입니다. 참석 또는 긍정적으로 응답한 사람의 이름을 찾아주세요.\n팀 멤버: ${names}\n멤버 중 참석한 이름만 JSON 배열로 반환. 예: ["홍길동","김철수"]\nJSON만 반환하고 다른 텍스트 없이.` }
-          ]
-        }]
-      })
+async function handleImg(input){
+  const file=input.files[0];if(!file)return;
+  const apiKey=localStorage.getItem('bbapikey')||'';
+  if(!apiKey){alert('API 키를 먼저 입력해 주세요.');return;}
+  const btn=document.getElementById('ubtn');
+  const resEl=document.getElementById('ares');
+  btn.innerHTML='<span class="spin"></span>분석 중...';btn.disabled=true;resEl.innerHTML='';
+  const b64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(file);});
+  try{
+    const names=members.map(m=>m.name).join(', ');
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:file.type||'image/jpeg',data:b64}},
+        {type:'text',text:`카카오톡 투표 결과 캡처입니다. 참석 응답한 사람의 이름을 찾아주세요.\n팀 멤버: ${names}\n참석한 이름만 JSON 배열로 반환. 예: ["홍길동"]\nJSON만 반환.`}
+      ]}]})
     });
-    const data = await resp.json();
-    const text = (data.content||[]).map(c => c.text||'').join('');
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-    const matched = members.filter(m => parsed.some(n => m.name.includes(n)||n.includes(m.name)));
-    attended = matched.map(m => m.id);
-    save();
-    resEl.className = 'ai-result';
-    resEl.innerHTML = `✅ ${matched.length}명 인식: ${matched.map(m=>m.name).join(', ')}`;
-    renderAttend();
-  } catch(e) {
-    resEl.className = 'ai-result err';
-    resEl.innerHTML = '❌ 분석 실패. 수동으로 체크해 주세요.';
-  }
-  btn.innerHTML = '이미지 업로드';
-  btn.disabled = false;
-  input.value = '';
+    const data=await resp.json();
+    const text=(data.content||[]).map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    const matched=members.filter(m=>parsed.some(n=>m.name.includes(n)||n.includes(m.name)));
+    attended=matched.map(m=>m.id);sv();
+    resEl.className='ai-ok';resEl.innerHTML=`✅ ${matched.length}명 인식: ${matched.map(m=>m.name).join(', ')}`;
+    renderAtt();
+  }catch(e){resEl.className='ai-err';resEl.innerHTML='❌ 분석 실패. 수동으로 체크해 주세요.';}
+  btn.innerHTML='이미지 업로드';btn.disabled=false;input.value='';
 }
 
-// ── 팀배분 탭 ──
-function renderTeamInfo() {
-  const present = members.filter(m => attended.includes(m.id));
-  document.getElementById('team-info').textContent = `참석 인원: ${present.length}명`;
+function renderTInfo(){
+  const n=members.filter(m=>attended.includes(m.id)).length;
+  document.getElementById('tinfo').textContent=`참석 인원: ${n}명`;
 }
 
-function divideTeams() {
-  const present = members.filter(m => attended.includes(m.id));
-  if (present.length < 2) { alert('참석 탭에서 최소 2명 이상 선택해 주세요.'); return; }
-
-  const sorted = [...present].sort((a,b) => totalScore(b)-totalScore(a));
-  const t1=[], t2=[];
-  let s1=0, s2=0;
-  for (const m of sorted) {
-    const sc = totalScore(m);
-    if (s1<=s2) { t1.push(m); s1+=sc; } else { t2.push(m); s2+=sc; }
-  }
-
-  const teamHtml = (team, cls, label) => `
-    <div class="team-card ${cls}">
-      <div class="team-header">${label} · ${team.length}명</div>
-      ${team.map(m => `
-        <div class="team-member">
-          <div>
-            <div class="member-name">${m.name}</div>
-            <div class="member-sub">${m.pos1} / ${m.pos2}</div>
-          </div>
-          <div style="font-size:13px;color:#888">${totalScore(m)}점</div>
-        </div>
-      `).join('')}
-    </div>
-  `;
-
-  document.getElementById('team-result').innerHTML = `
-    <div class="score-cards">
-      <div class="score-card blue"><div class="sc-label">팀 1 총점</div><div class="sc-val">${s1}</div></div>
-      <div class="score-card red"><div class="sc-label">팀 2 총점</div><div class="sc-val">${s2}</div></div>
+function divide(){
+  const present=members.filter(m=>attended.includes(m.id));
+  if(present.length<2){alert('참석 탭에서 최소 2명 이상 선택해 주세요.');return;}
+  const sorted=[...present].sort((a,b)=>tot(b)-tot(a));
+  const t1=[],t2=[];let s1=0,s2=0;
+  for(const m of sorted){const sc=tot(m);if(s1<=s2){t1.push(m);s1+=sc;}else{t2.push(m);s2+=sc;}}
+  const tHtml=(team,hCls,numCls,label)=>`
+    <div class="team-card">
+      <div class="${hCls}">${label} · ${team.length}명</div>
+      ${team.map(m=>`<div class="tm"><div><div class="mname">${m.name}</div><div class="msub">${m.pos1} / ${m.pos2}</div></div><div style="font-size:13px;color:#888">${tot(m)}점</div></div>`).join('')}
+    </div>`;
+  document.getElementById('tres').innerHTML=`
+    <div class="sc-cards">
+      <div class="sc-b"><div class="sc-lbl">팀 1 총점</div><div class="sc-num-b">${s1}</div></div>
+      <div class="sc-r"><div class="sc-lbl">팀 2 총점</div><div class="sc-num-r">${s2}</div></div>
     </div>
     <div class="diff">점수 차이: ${Math.abs(s1-s2)}점</div>
-    ${teamHtml(t1,'team-blue','팀 1')}
-    ${teamHtml(t2,'team-red','팀 2')}
-  `;
-  renderTeamInfo();
+    ${tHtml(t1,'th-b','sc-num-b','팀 1')}
+    ${tHtml(t2,'th-r','sc-num-r','팀 2')}`;
+  renderTInfo();
 }
 
-// init
 renderMembers();
 </script>
 </body>
